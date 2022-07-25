@@ -8,17 +8,17 @@ import (
 	"strconv"
 )
 
-type CurrencyApiHandler struct {
+type CurrencyHandler struct {
 	From string
 	To   string
 }
 
-func (apiHandler *CurrencyApiHandler) buildUrl() string {
-	return fmt.Sprintf("https://currency-exchange.p.rapidapi.com/exchange?to=%s&from=%s&q=1.0", apiHandler.To, apiHandler.From)
+func (h *CurrencyHandler) buildUrl() string {
+	return fmt.Sprintf("https://currency-exchange.p.rapidapi.com/exchange?to=%s&from=%s&q=1.0", h.To, h.From)
 }
 
-func (apiHandler *CurrencyApiHandler) GetRawData() float32 {
-	url := apiHandler.buildUrl()
+func (h *CurrencyHandler) GetRawData() float32 {
+	url := h.buildUrl()
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 
 	req.Header.Add("X-RapidAPI-Key", "a8fe49be17msh04f20561e45423bp191780jsn2c62f34aff4d")

@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	apiHandler := api.CurrencyApiHandler{
+	apiHandler := api.CurrencyHandler{
 		To:   "ARS",
 		From: "USD",
 	}
@@ -22,7 +22,7 @@ func main() {
 		log.Panic(err)
 	}
 
-	emailHand := email.EmailHandler{
+	emailHand := email.Handler{
 		From:     os.Getenv("ADDR"),
 		To:       contact.GetContacts(),
 		Password: os.Getenv("PASS"),

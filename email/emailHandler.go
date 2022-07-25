@@ -11,7 +11,7 @@ import (
 	"text/template"
 )
 
-type EmailHandler struct {
+type Handler struct {
 	From     string
 	To       []string
 	Password string
@@ -23,25 +23,25 @@ func getPath() (string, error) {
 	return filepath.Abs("./email/ASSET/template.html")
 }
 
-func (handler *EmailHandler) SendCurrInfo(data float32) {
-	conn, err := net.Dial("tcp", "smtp.office365.com:587")
+func (h *Handler) SendCurrInfo(data float32) {
+	conn, err := net.Dial("tcp", h.Host+":"+h.Port)
 	if err != nil {
 		println(err)
 	}
-	c, err := smtp.NewClient(conn, handler.Host)
+	c, err := smtp.NewClient(conn, h.Host)
 	if err != nil {
 		println(err)
 	}
 
 	tlsconfig := &tls.Config{
-		ServerName: handler.Port,
+		ServerName: h.Port,
 	}
 
 	if err = c.StartTLS(tlsconfig); err != nil {
 		println(err)
 	}
 
-	auth := LoginAuth(handler.From, handler.Password)
+	auth := LoginAuth(h.From, h.Password)
 
 	var body bytes.Buffer
 
@@ -70,7 +70,7 @@ func (handler *EmailHandler) SendCurrInfo(data float32) {
 		println(err)
 	}
 
-	err = smtp.SendMail(handler.Host+":"+handler.Port, auth, handler.From, handler.To, body.Bytes())
+	err = smtp.SendMail(h.Host+":"+h.Port, auth, h.From, h.To, body.Bytes())
 	if err != nil {
 		log.Panic(err)
 		return
